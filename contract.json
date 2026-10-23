@@ -1,10 +1,16 @@
 {
   "base_url": "http://localhost:8000",
-  "resource": "items",
+  "resource": "categories",
   "id_field": "id",
   "missing_id": "999999",
   "list_key": null,
-  "create": { "title": "Первая запись" },
-  "update": { "title": "Изменённая запись" },
-  "required_field": "title"
+  "create": { "name": "Продукты", "monthly_limit": 20000, "note": "еда домой" },
+  "update": { "monthly_limit": 25000 },
+  "required_field": "name",
+  "errors": [
+    { "body": { "name": "" }, "field": "name" },
+    { "body": { "monthly_limit": -1 }, "field": "monthly_limit" },
+    { "body": { "note": 123 }, "field": "note" }
+  ],
+  "filter": { "param": "name", "value": "Продукты", "other": "Транспорт" }
 }
