@@ -1,44 +1,52 @@
-# Запросы для демонстрации. В VS Code нужно расширение REST Client, в JetBrains IDE всё встроено.
-# Над каждым запросом появляется ссылка «Send Request».
-# items заменить на свой ресурс, тела на поля своей сущности.
+@host = http://localhost:8000
 
-@base = http://localhost:8000
+### health
+GET {{host}}/health
 
-### Сервис жив?
-GET {{base}}/health
-
-### Создать
-POST {{base}}/api/items
+### создать категорию
+POST {{host}}/api/categories
 Content-Type: application/json
 
-{ "title": "Первая запись" }
+{"name": "Продукты", "monthly_limit": 20000, "note": "еда домой"}
 
-### Список
-GET {{base}}/api/items
+### список
+GET {{host}}/api/categories
 
-### Получить одну запись
-GET {{base}}/api/items/1
+### список: фильтр и пагинация
+GET {{host}}/api/categories?name=Продукты&limit=10&offset=0
 
-### Изменить
-PATCH {{base}}/api/items/1
+### одна категория
+GET {{host}}/api/categories/1
+
+### неизвестный id (404)
+GET {{host}}/api/categories/999999
+
+### изменить
+PATCH {{host}}/api/categories/1
 Content-Type: application/json
 
-{ "title": "Изменённая запись" }
+{"monthly_limit": 25000}
 
-### Удалить
-DELETE {{base}}/api/items/1
-
-### После удаления должен быть 404
-GET {{base}}/api/items/1
-
-### Сломанный JSON, должен быть 400
-POST {{base}}/api/items
+### пустое имя (400)
+POST {{host}}/api/categories
 Content-Type: application/json
 
-{ "title":
+{"name": "", "monthly_limit": 100}
 
-### Пустое обязательное поле, должен быть 400
-POST {{base}}/api/items
+### отрицательный лимит (400)
+POST {{host}}/api/categories
 Content-Type: application/json
 
-{ "title": "" }
+{"name": "Транспорт", "monthly_limit": -1}
+
+### сломанный JSON (400)
+POST {{host}}/api/categories
+Content-Type: application/json
+
+{"name": "Продукты",
+
+### удалить
+DELETE {{host}}/api/categories/1
+
+### после удаления (404)
+GET {{host}}/api/categories/1
