@@ -22,7 +22,7 @@ GET {{host}}/api/categories/1
 GET {{host}}/api/categories/999999
 
 ### изменить
-PATCH {{host}}/api/categories/1
+PATCH {{host}}/api/categories/2
 Content-Type: application/json
 
 {"monthly_limit": 25000}

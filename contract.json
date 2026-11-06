@@ -12,5 +12,20 @@
     { "body": { "monthly_limit": -1 }, "field": "monthly_limit" },
     { "body": { "note": 123 }, "field": "note" }
   ],
-  "filter": { "param": "name", "value": "Продукты", "other": "Транспорт" }
+  "filter": { "param": "name", "value": "Продукты", "other": "Транспорт" },
+  "text_field": "name",
+  "sort": { "param": "sort", "value": "name", "field": "name" },
+  "search": { "param": "q", "value": "Прод", "field": "name" },
+  "child": {
+    "resource": "expenses",
+    "create": { "amount": 100, "date": "2026-10-01", "comment": "хлеб" },
+    "parent_field": "category_id"
+  },
+  "rule": {
+    "description": "Траты за месяц не могут превысить лимит категории",
+    "setup": [{ "method": "POST", "path": "/api/categories/{id}/expenses", "body": { "amount": 15000, "date": "2026-10-01" } }],
+    "violate": { "method": "POST", "path": "/api/categories/{id}/expenses", "body": { "amount": 10000, "date": "2026-10-02" } },
+    "expect_status": 409
+  },
+  "stats_path": "/api/expenses/stats"
 }
